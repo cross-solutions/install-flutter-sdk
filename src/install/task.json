@@ -1,0 +1,35 @@
+{
+    "id": "7248c5a0-bfab-4da2-85ca-95230bf93a24",
+    "name": "install-flutter-sdk",
+    "friendlyName": "Install Flutter SDK",
+    "description": "Installs the Flutter SDK and add it to your `PATH` environment. You can then run `flutter` commands in succeeding tasks using the command line.",
+    "helpMarkDown": "Go to http://flutter.io for more information.",
+    "category": "Tool",
+    "author": "contrix09",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 4
+    },
+    "instanceNameFormat": "Flutter Install",
+    "inputs": [
+        {
+            "name": "channel",
+            "type": "pickList",
+            "label": "Release Channel",
+            "defaultValue": "stable",
+            "required": true,
+            "helpMarkDown": "The release channel to download the SDK from.",
+            "options": {
+                "stable": "Stable",
+                "master": "Master",
+                "dev": "Dev"
+            }
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

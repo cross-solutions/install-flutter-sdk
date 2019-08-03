@@ -1,0 +1,58 @@
+{
+    "manifestVersion": 1,
+    "id": "install-flutter-sdk",
+    "name": "Install Flutter SDK",
+    "version": "0.0.6",
+    "publisher": "contrix09",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Installs the Flutter SDK",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/flutter.png"
+    },
+    "files": [
+        {
+            "path": "install"
+        }
+    ],
+    "content": {
+        "details": {
+            "path": "README.md"
+        },
+        "license": {
+            "path": "LICENSE.md"
+        }
+    },
+    "links": {
+        "support": {
+            "uri": "https://github.com/contrix09/install-flutter-sdk/issues"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/contrix09/install-flutter-sdk"
+    },
+    "tags": [
+        "flutter",
+        "Android",
+        "iOS"
+    ],
+    "contributions": [
+        {
+            "id": "install-flutter-sdk",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "install"
+            }
+        }
+    ]
+}
