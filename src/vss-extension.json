@@ -2,7 +2,8 @@
     "manifestVersion": 1,
     "id": "install-flutter-sdk",
     "name": "Install Flutter SDK",
-    "version": "0.0.6",
+    "version": "0.1.0",
+    "public": true,
     "publisher": "contrix09",
     "targets": [
         {
