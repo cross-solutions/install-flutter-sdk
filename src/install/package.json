@@ -1,13 +1,13 @@
 {
-  "name": "src",
+  "name": "install-flutter-sdk",
   "version": "1.0.0",
-  "description": "",
+  "description": "Install Flutter SDK Task",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Dustin Catap",
+  "license": "MIT",
   "dependencies": {
     "@types/jest": "^24.0.16",
     "@types/request-promise": "^4.1.44",

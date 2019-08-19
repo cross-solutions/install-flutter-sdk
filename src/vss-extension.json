@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "install-flutter-sdk",
     "name": "Install Flutter SDK",
-    "version": "0.1.1",
+    "version": "0.1.7",
     "public": true,
     "publisher": "contrix09",
     "targets": [
@@ -20,6 +20,10 @@
     "files": [
         {
             "path": "install"
+        },
+        {
+            "path": "images",
+            "addressable": true
         }
     ],
     "content": {

@@ -19,7 +19,7 @@ function run() {
             var currentPlatform = yield getCurrentPlatform();
             var latestSdkVersion = yield findLatestSdkVersion(flutterChannel, currentPlatform);
             var versionSpec = `${latestSdkVersion}-${flutterChannel}`;
-            yield downloadSdk(versionSpec, flutterChannel, currentPlatform);
+            yield downloadAndInstallSdk(versionSpec, flutterChannel, currentPlatform);
         }
         catch (err) {
             task.setResult(task.TaskResult.Failed, err.message);
@@ -51,7 +51,7 @@ function findLatestSdkVersion(channel, arch) {
         return current.version.substring(1);
     });
 }
-function downloadSdk(versionSpec, channel, platform) {
+function downloadAndInstallSdk(versionSpec, channel, platform) {
     return __awaiter(this, void 0, void 0, function* () {
         var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.zip`;
         console.log(`Downloading latest sdk version '${versionSpec}' from channel '${channel}' from ${downloadUrl}`);
@@ -62,8 +62,14 @@ function downloadSdk(versionSpec, channel, platform) {
         console.log('Caching Flutter sdk');
         tool.cacheDir(sdkZipBundleDir, 'Flutter', versionSpec, platform);
         var flutterSdkPath = sdkZipBundleDir + '/flutter/bin';
+        var dartSdkPath = flutterSdkPath + '/cache/dart-sdk/bin';
+        var pubCachePath = '$HOME/.pub-cache/bin';
         console.log(`Adding ${flutterSdkPath}  PATH environment `);
         task.prependPath(flutterSdkPath);
+        console.log(`Adding ${dartSdkPath}  PATH environment `);
+        task.prependPath(dartSdkPath);
+        console.log(`Adding ${pubCachePath}  PATH environment `);
+        task.prependPath(pubCachePath);
     });
 }
 run();

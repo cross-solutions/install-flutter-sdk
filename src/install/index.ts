@@ -9,7 +9,7 @@ async function run() {
         var currentPlatform = await getCurrentPlatform();
         var latestSdkVersion = await findLatestSdkVersion(flutterChannel, currentPlatform);
         var versionSpec = `${latestSdkVersion}-${flutterChannel}`;
-        await downloadSdk(versionSpec, flutterChannel, currentPlatform);
+        await downloadAndInstallSdk(versionSpec, flutterChannel, currentPlatform);
     }
     catch (err) {
         task.setResult(task.TaskResult.Failed, err.message);
@@ -39,7 +39,7 @@ async function findLatestSdkVersion(channel: string, arch: string): Promise<stri
     return current.version.substring(1);
 }
 
-async function downloadSdk(versionSpec: string, channel: string, platform: string) {
+async function downloadAndInstallSdk(versionSpec: string, channel: string, platform: string) {
     var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.zip`;
     console.log(`Downloading latest sdk version '${versionSpec}' from channel '${channel}' from ${downloadUrl}`);
 
@@ -53,8 +53,17 @@ async function downloadSdk(versionSpec: string, channel: string, platform: strin
     tool.cacheDir(sdkZipBundleDir, 'Flutter', versionSpec, platform);
 
     var flutterSdkPath = sdkZipBundleDir + '/flutter/bin';
-    console.log(`Adding ${flutterSdkPath}  PATH environment `);
+    var dartSdkPath = flutterSdkPath + '/cache/dart-sdk/bin';
+    var pubCachePath = '$HOME/.pub-cache/bin';
+
+    console.log(`Adding ${flutterSdkPath} PATH environment `);
     task.prependPath(flutterSdkPath);
+
+    console.log(`Adding ${dartSdkPath} PATH environment `);
+    task.prependPath(dartSdkPath);
+
+    console.log(`Adding ${pubCachePath} PATH environment `);
+    task.prependPath(pubCachePath);
 }
 
 run();
