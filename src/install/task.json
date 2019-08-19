@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 7
+        "Patch": 8
     },
     "instanceNameFormat": "Flutter Install",
     "inputs": [
@@ -22,7 +22,7 @@
             "helpMarkDown": "The release channel to download the SDK from.",
             "options": {
                 "stable": "Stable",
-                "master": "Master",
+                "beta": "Beta",
                 "dev": "Dev"
             }
         }
