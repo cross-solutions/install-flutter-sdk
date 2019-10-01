@@ -63,7 +63,7 @@ function downloadAndInstallSdk(versionSpec, channel, platform) {
         tool.cacheDir(sdkZipBundleDir, 'Flutter', versionSpec, platform);
         var flutterSdkPath = sdkZipBundleDir + '/flutter/bin';
         var dartSdkPath = flutterSdkPath + '/cache/dart-sdk/bin';
-        var pubCachePath = '$HOME/.pub-cache/bin';
+        var pubCachePath = process.env.HOME + '/.pub-cache/bin';
         console.log(`Adding ${flutterSdkPath} PATH environment `);
         task.prependPath(flutterSdkPath);
         console.log(`Adding ${dartSdkPath} PATH environment `);

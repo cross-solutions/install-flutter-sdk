@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "install-flutter-sdk",
     "name": "Install Flutter SDK",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "public": true,
     "publisher": "contrix09",
     "targets": [
@@ -36,12 +36,12 @@
     },
     "links": {
         "support": {
-            "uri": "https://github.com/contrix09/install-flutter-sdk/issues"
+            "uri": "https://github.com/cross-solutions/install-flutter-sdk/issues"
         }
     },
     "repository": {
         "type": "git",
-        "uri": "https://github.com/contrix09/install-flutter-sdk"
+        "uri": "https://github.com/cross-solutions/install-flutter-sdk"
     },
     "tags": [
         "flutter",

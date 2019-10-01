@@ -40,7 +40,8 @@ async function findLatestSdkVersion(channel: string, arch: string): Promise<stri
 }
 
 async function downloadAndInstallSdk(versionSpec: string, channel: string, platform: string) {
-    var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.zip`;
+    var extension = platform  == 'linux' ? 'tar.xz' : 'zip'
+    var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.${extension}`;
     console.log(`Downloading latest sdk version '${versionSpec}' from channel '${channel}' from ${downloadUrl}`);
 
     var sdkZipBundle = await tool.downloadTool(downloadUrl);
@@ -54,7 +55,7 @@ async function downloadAndInstallSdk(versionSpec: string, channel: string, platf
 
     var flutterSdkPath = sdkZipBundleDir + '/flutter/bin';
     var dartSdkPath = flutterSdkPath + '/cache/dart-sdk/bin';
-    var pubCachePath = '$HOME/.pub-cache/bin';
+    var pubCachePath = process.env.HOME + '/.pub-cache/bin';
 
     console.log(`Adding ${flutterSdkPath} PATH environment `);
     task.prependPath(flutterSdkPath);
