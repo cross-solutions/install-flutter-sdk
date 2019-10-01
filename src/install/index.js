@@ -53,8 +53,14 @@ function findLatestSdkVersion(channel, arch) {
 }
 function downloadAndInstallSdk(versionSpec, channel, platform) {
     return __awaiter(this, void 0, void 0, function* () {
-        var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.zip`;
-        console.log(`Downloading latest sdk version '${versionSpec}' from channel '${channel}' from ${downloadUrl}`);
+        var downloadUrl = '';
+        if (channel != 'master') {
+            var extension = platform == 'linux' ? 'tar.xz' : 'zip';
+            downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.${extension}`;
+        }
+        else
+            downloadUrl = 'https://github.com/flutter/flutter/archive/master.zip';
+        console.log(`Downloading latest sdk from ${downloadUrl}`);
         var sdkZipBundle = yield tool.downloadTool(downloadUrl);
         console.log(`Downloaded SDK zip bundle at ${sdkZipBundle}`);
         var sdkZipBundleDir = yield tool.extractZip(sdkZipBundle);

@@ -23,7 +23,8 @@
             "options": {
                 "stable": "Stable",
                 "beta": "Beta",
-                "dev": "Dev"
+                "dev": "Dev",
+                "master": "Master"
             }
         }
     ],

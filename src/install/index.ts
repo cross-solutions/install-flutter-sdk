@@ -40,10 +40,16 @@ async function findLatestSdkVersion(channel: string, arch: string): Promise<stri
 }
 
 async function downloadAndInstallSdk(versionSpec: string, channel: string, platform: string) {
-    var extension = platform  == 'linux' ? 'tar.xz' : 'zip'
-    var downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.${extension}`;
-    console.log(`Downloading latest sdk version '${versionSpec}' from channel '${channel}' from ${downloadUrl}`);
+    var downloadUrl = '';
 
+    if (channel != 'master') {
+        var extension = platform == 'linux' ? 'tar.xz' : 'zip'
+        downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.${extension}`;
+    }
+    else
+        downloadUrl = 'https://github.com/flutter/flutter/archive/master.zip';
+
+    console.log(`Downloading latest sdk from ${downloadUrl}`);
     var sdkZipBundle = await tool.downloadTool(downloadUrl);
     console.log(`Downloaded SDK zip bundle at ${sdkZipBundle}`);
 
