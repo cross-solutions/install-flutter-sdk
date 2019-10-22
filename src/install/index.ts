@@ -7,9 +7,8 @@ async function run() {
     try {
         var flutterChannel = task.getInput('channel', true);
         var currentPlatform = await getCurrentPlatform();
-        var latestSdkVersion = await findLatestSdkVersion(flutterChannel, currentPlatform);
-        var versionSpec = `${latestSdkVersion}-${flutterChannel}`;
-        await downloadAndInstallSdk(versionSpec, flutterChannel, currentPlatform);
+        var latestSdkInformation = await findLatestSdkInformation(flutterChannel, currentPlatform);
+        await downloadAndInstallSdk(latestSdkInformation.downloadUrl, latestSdkInformation.version, currentPlatform);
     }
     catch (err) {
         task.setResult(task.TaskResult.Failed, err.message);
@@ -30,36 +29,36 @@ async function getCurrentPlatform(): Promise<string> {
     }
 }
 
-async function findLatestSdkVersion(channel: string, arch: string): Promise<string> {
+async function findLatestSdkInformation(channel: string, arch: string): Promise<{ downloadUrl: string, version: string }> {
     var releasesUrl = `https://storage.googleapis.com/flutter_infra/releases/releases_${arch}.json`;
     var body = await request.get(releasesUrl);
     var json = JSON.parse(body);
     var currentHash = json.current_release[channel];
     var current = json.releases.find((item: { hash: any; }) => item.hash === currentHash);
-    return current.version.substring(1);
+    return {
+        downloadUrl: body.base_url + '/' + current.archive,
+        version: channel + '-' + current.version.substring(1)
+    };
 }
 
-async function downloadAndInstallSdk(versionSpec: string, channel: string, platform: string) {
-    var downloadUrl = '';
+async function downloadAndInstallSdk(latestSdkDownloadUrl: string, version: string, arch: string) {
+    console.log(`Downloading latest sdk from ${latestSdkDownloadUrl}`);
+    var sdkBundle = await tool.downloadTool(latestSdkDownloadUrl);
+    console.log(`Downloaded SDK zip bundle at ${latestSdkDownloadUrl}`);
 
-    if (channel != 'master') {
-        var extension = platform == 'linux' ? 'tar.xz' : 'zip'
-        downloadUrl = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${platform}/flutter_${platform}_v${versionSpec}.${extension}`;
+    var sdkExtractedBundleDir;
+    if (latestSdkDownloadUrl.includes('tar.xz')) {
+        sdkExtractedBundleDir = await tool.extractTar(sdkBundle);
+        console.log(`Extracted SDK Tar bundle at ${sdkExtractedBundleDir}`);
+    } else {
+        sdkExtractedBundleDir = await tool.extractZip(sdkBundle);
+        console.log(`Extracted SDK Zip bundle at ${sdkExtractedBundleDir}`);
     }
-    else
-        downloadUrl = 'https://github.com/flutter/flutter/archive/master.zip';
-
-    console.log(`Downloading latest sdk from ${downloadUrl}`);
-    var sdkZipBundle = await tool.downloadTool(downloadUrl);
-    console.log(`Downloaded SDK zip bundle at ${sdkZipBundle}`);
-
-    var sdkZipBundleDir = await tool.extractZip(sdkZipBundle);
-    console.log(`Extracted SDK zip bundle at ${sdkZipBundleDir}`);
 
     console.log('Caching Flutter sdk');
-    tool.cacheDir(sdkZipBundleDir, 'Flutter', versionSpec, platform);
+    tool.cacheDir(sdkExtractedBundleDir, 'Flutter', version, arch);
 
-    var flutterSdkPath = sdkZipBundleDir + '/flutter/bin';
+    var flutterSdkPath = sdkExtractedBundleDir + '/flutter/bin';
     var dartSdkPath = flutterSdkPath + '/cache/dart-sdk/bin';
     var pubCachePath = process.env.HOME + '/.pub-cache/bin';
 
