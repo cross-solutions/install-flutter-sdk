@@ -48,7 +48,7 @@ function findLatestSdkInformation(channel, arch) {
         var currentHash = json.current_release[channel];
         var current = json.releases.find((item) => item.hash === currentHash);
         return {
-            downloadUrl: body.base_url + '/' + current.archive,
+            downloadUrl: json.base_url + '/' + current.archive,
             version: channel + '-' + current.version.substring(1)
         };
     });
