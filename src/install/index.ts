@@ -35,6 +35,10 @@ async function findLatestSdkInformation(channel: string, arch: string): Promise<
     var json = JSON.parse(body);
     var currentHash = json.current_release[channel];
     var current = json.releases.find((item: { hash: any; }) => item.hash === currentHash);
+    json.releases.forEach((element: { archive: string; }) => {
+        console.log("Found: " + element.archive);
+    });
+    
     return {
         downloadUrl: json.base_url + '/' + current.archive,
         version: channel + '-' + current.version.substring(1)
