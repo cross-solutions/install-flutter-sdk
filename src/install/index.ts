@@ -6,8 +6,9 @@ import * as request from 'request-promise';
 async function run() {
     try {
         var flutterChannel = task.getInput('channel', true);
+        var flutterVersion = task.getInput('version');
         var currentPlatform = await getCurrentPlatform();
-        var latestSdkInformation = await findLatestSdkInformation(flutterChannel, currentPlatform);
+        var latestSdkInformation = await findSdkInformation(flutterChannel, currentPlatform, flutterVersion);
         await downloadAndInstallSdk(latestSdkInformation.downloadUrl, latestSdkInformation.version, currentPlatform);
     }
     catch (err) {
@@ -29,7 +30,7 @@ async function getCurrentPlatform(): Promise<string> {
     }
 }
 
-async function findLatestSdkInformation(channel: string, arch: string): Promise<{ downloadUrl: string, version: string }> {
+async function findSdkInformation(channel: string, arch: string, version: string): Promise<{ downloadUrl: string, version: string }> {
     var releasesUrl = `https://storage.googleapis.com/flutter_infra/releases/releases_${arch}.json`;
     var body = await request.get(releasesUrl);
     var json = JSON.parse(body);
@@ -38,10 +39,11 @@ async function findLatestSdkInformation(channel: string, arch: string): Promise<
     json.releases.forEach((element: { archive: string; }) => {
         console.log("Found: " + element.archive);
     });
-    
+    var flutterVersion = version != null ? version : current.version.substring(1)
+
     return {
         downloadUrl: json.base_url + '/' + current.archive,
-        version: channel + '-' + current.version.substring(1)
+        version: channel + '-' + flutterVersion
     };
 }
 
