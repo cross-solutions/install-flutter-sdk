@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 2,
-        "Patch": 1
+        "Patch": 6
     },
     "instanceNameFormat": "Flutter Install",
     "inputs": [
@@ -26,6 +26,13 @@
                 "dev": "Dev",
                 "master": "Master"
             }
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "label": "Flutter version",
+            "required": false,
+            "helpMarkDown": "The flutter version to download."
         }
     ],
     "execution": {
