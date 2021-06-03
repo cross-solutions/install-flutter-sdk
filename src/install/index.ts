@@ -39,7 +39,7 @@ async function findSdkInformation(channel: string, arch: string, version: string
     json.releases.forEach((element: { archive: string; }) => {
         console.log("Found: " + element.archive);
     });
-    var flutterVersion = version != null ? version : current.version.substring(1)
+    var flutterVersion = version != null && version.length > 0 ? version : current.version.substring(1)
 
     return {
         downloadUrl: json.base_url + '/' + current.archive,
