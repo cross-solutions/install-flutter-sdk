@@ -31,7 +31,7 @@ async function getCurrentPlatform(): Promise<string> {
 }
 
 async function findSdkInformation(channel: string, arch: string, version: string): Promise<{ downloadUrl: string, version: string }> {
-    var releasesUrl = `https://storage.googleapis.com/flutter_infra/releases/releases_${arch}.json`;
+    var releasesUrl = `https://storage.googleapis.com/flutter_infra_releases/releases/releases_${arch}.json`;
     var body = await request.get(releasesUrl);
     var json = JSON.parse(body);
     var currentHash = json.current_release[channel];
